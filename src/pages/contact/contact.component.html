@@ -1,0 +1,61 @@
+
+<div class="animate-slide-in-bottom">
+  <h1 class="text-3xl font-bold mb-6 border-b-2 border-light-accent dark:border-dark-accent pb-2">Contact Me</h1>
+  <p class="mb-8 text-slate-600 dark:text-slate-400">
+    Have a question or want to work together? Fill out the form below and I'll get back to you as soon as possible.
+  </p>
+
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
+    <div>
+      <label for="name" class="block text-sm font-medium">Name</label>
+      <input type="text" id="name" formControlName="name"
+             class="mt-1 block w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-light-accent focus:border-light-accent dark:focus:ring-dark-accent dark:focus:border-dark-accent">
+      @if (contactForm.get('name')?.invalid && contactForm.get('name')?.touched) {
+        <p class="mt-1 text-sm text-red-500">Name is required.</p>
+      }
+    </div>
+    <div>
+      <label for="email" class="block text-sm font-medium">Email</label>
+      <input type="email" id="email" formControlName="email"
+             class="mt-1 block w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-light-accent focus:border-light-accent dark:focus:ring-dark-accent dark:focus:border-dark-accent">
+      @if (contactForm.get('email')?.invalid && contactForm.get('email')?.touched) {
+        <p class="mt-1 text-sm text-red-500">
+          @if (contactForm.get('email')?.errors?.['required']) {
+            Email is required.
+          } @else if (contactForm.get('email')?.errors?.['email']) {
+            Please enter a valid email.
+          }
+        </p>
+      }
+    </div>
+    <div>
+      <label for="message" class="block text-sm font-medium">Message</label>
+      <textarea id="message" formControlName="message" rows="4"
+                class="mt-1 block w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-light-accent focus:border-light-accent dark:focus:ring-dark-accent dark:focus:border-dark-accent"></textarea>
+      @if (contactForm.get('message')?.invalid && contactForm.get('message')?.touched) {
+        <p class="mt-1 text-sm text-red-500">Message is required (minimum 10 characters).</p>
+      }
+    </div>
+    <div>
+      <button type="submit" [disabled]="contactForm.invalid || status() === 'sending'"
+              class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-light-accent hover:bg-blue-700 dark:bg-dark-accent dark:hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">
+        @if (status() === 'sending') {
+          <span>Sending...</span>
+        } @else {
+          <span>Send Message</span>
+        }
+      </button>
+    </div>
+  </form>
+
+  @if (status() === 'success') {
+    <div class="mt-4 p-4 text-sm text-green-700 bg-green-100 rounded-md">
+      Message sent successfully! Thank you for reaching out.
+    </div>
+  }
+  @if (status() === 'error') {
+    <div class="mt-4 p-4 text-sm text-red-700 bg-red-100 rounded-md">
+      {{ errorMessage() }}
+    </div>
+  }
+</div>

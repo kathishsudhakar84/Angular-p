@@ -1,0 +1,71 @@
+
+<div class="animate-slide-in-bottom">
+  <h1 class="text-3xl font-bold mb-6 border-b-2 border-light-accent dark:border-dark-accent pb-2">Portfolio</h1>
+  
+  <div class="mb-6">
+    <div class="border-b border-slate-200 dark:border-slate-700">
+      <nav class="-mb-px flex space-x-6">
+        <button
+          (click)="selectTab('projects')"
+          [class]="activeTab() === 'projects' ? 'border-light-accent dark:border-dark-accent text-light-accent dark:text-dark-accent' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600'"
+          class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+          Projects
+        </button>
+        <button
+          (click)="selectTab('experience')"
+          [class]="activeTab() === 'experience' ? 'border-light-accent dark:border-dark-accent text-light-accent dark:text-dark-accent' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600'"
+          class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+          Experience
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="text-center p-8">Loading...</div>
+  } @else if (error()) {
+    <div class="text-center p-8 text-red-500">{{ error() }}</div>
+  } @else {
+    @switch (activeTab()) {
+      @case ('projects') {
+        <div class="grid grid-cols-1 gap-8">
+          @for (project of projects(); track project.id) {
+            <div class="bg-white dark:bg-dark-secondary rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+              <img [src]="project.image_url" alt="{{ project.title }}" class="w-full h-48 object-cover">
+              <div class="p-6">
+                <h3 class="text-xl font-bold mb-2">{{ project.title }}</h3>
+                <div class="flex flex-wrap gap-2 mb-4">
+                  @for (tag of project.tags; track tag) {
+                    <span class="text-xs font-semibold bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded-full">{{ tag }}</span>
+                  }
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 mb-4 text-sm">{{ project.description }}</p>
+                <a [href]="project.project_url" target="_blank" rel="noopener noreferrer" class="font-medium text-light-accent dark:text-dark-accent hover:underline">View Project &rarr;</a>
+              </div>
+            </div>
+          } @empty {
+            <p>No projects to display yet.</p>
+          }
+        </div>
+      }
+      @case ('experience') {
+        <div class="space-y-8">
+          @for (item of experience(); track item.id) {
+            <div class="p-6 bg-white dark:bg-dark-secondary rounded-xl shadow-lg">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="text-xl font-bold">{{ item.role }}</h3>
+                  <p class="text-md font-semibold text-light-accent dark:text-dark-accent">{{ item.company }}</p>
+                </div>
+                <span class="text-sm text-slate-500 dark:text-slate-400">{{ item.period }}</span>
+              </div>
+              <p class="mt-4 text-slate-600 dark:text-slate-400 text-sm">{{ item.description }}</p>
+            </div>
+          } @empty {
+            <p>No experience to display yet.</p>
+          }
+        </div>
+      }
+    }
+  }
+</div>

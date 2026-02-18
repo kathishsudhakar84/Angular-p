@@ -1,0 +1,107 @@
+
+<div class="space-y-6">
+  <div class="border-b border-slate-200 dark:border-slate-700">
+    <nav class="-mb-px flex space-x-4 overflow-x-auto">
+      <button (click)="selectTab('projects')" [class]="activeTab() === 'projects' ? 'border-red-500 text-red-600' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Projects</button>
+      <button (click)="selectTab('experience')" [class]="activeTab() === 'experience' ? 'border-red-500 text-red-600' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Experience</button>
+      <button (click)="selectTab('blog')" [class]="activeTab() === 'blog' ? 'border-red-500 text-red-600' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Blog</button>
+      <button (click)="selectTab('messages')" [class]="activeTab() === 'messages' ? 'border-red-500 text-red-600' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Messages</button>
+      <button (click)="selectTab('resume')" [class]="activeTab() === 'resume' ? 'border-red-500 text-red-600' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Resume</button>
+    </nav>
+  </div>
+
+  @switch (activeTab()) {
+    @case ('projects') {
+      <div class="space-y-6">
+        <form [formGroup]="projectForm" (ngSubmit)="handleAddProject()" class="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg space-y-4">
+          <h3 class="font-bold text-lg">Add New Project</h3>
+          <input formControlName="title" placeholder="Title" class="w-full p-2 rounded bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
+          <textarea formControlName="description" placeholder="Description" class="w-full p-2 rounded bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600"></textarea>
+          <input formControlName="project_url" placeholder="Project URL" class="w-full p-2 rounded bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
+          <input formControlName="tags" placeholder="Tags (comma-separated)" class="w-full p-2 rounded bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
+          <input type="file" (change)="onFileChange($event, 'image', 'projectForm')" class="w-full text-sm">
+          <button type="submit" [disabled]="projectForm.invalid" class="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50">Add Project</button>
+        </form>
+        <div class="space-y-2">
+          @for(project of projects(); track project.id) {
+            <div class="flex justify-between items-center p-2 bg-slate-100 dark:bg-slate-800 rounded">
+              <span>{{ project.title }}</span>
+              <button (click)="deleteItem('project', project.id)" class="px-2 py-1 text-xs bg-red-600 text-white rounded">Delete</button>
+            </div>
+          }
+        </div>
+      </div>
+    }
+    @case ('experience') {
+       <div class="space-y-6">
+        <form [formGroup]="experienceForm" (ngSubmit)="handleAddExperience()" class="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg space-y-4">
+          <h3 class="font-bold text-lg">Add New Experience</h3>
+          <input formControlName="role" placeholder="Role" class="w-full p-2 rounded bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
+          <input formControlName="company" placeholder="Company" class="w-full p-2 rounded bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
+          <input formControlName="period" placeholder="Period (e.g., 2020 - Present)" class="w-full p-2 rounded bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
+          <textarea formControlName="description" placeholder="Description" class="w-full p-2 rounded bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600"></textarea>
+          <button type="submit" [disabled]="experienceForm.invalid" class="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50">Add Experience</button>
+        </form>
+        <div class="space-y-2">
+          @for(exp of experiences(); track exp.id) {
+            <div class="flex justify-between items-center p-2 bg-slate-100 dark:bg-slate-800 rounded">
+              <span>{{ exp.role }} at {{ exp.company }}</span>
+              <button (click)="deleteItem('experience', exp.id)" class="px-2 py-1 text-xs bg-red-600 text-white rounded">Delete</button>
+            </div>
+          }
+        </div>
+      </div>
+    }
+    @case ('blog') {
+      <div class="space-y-6">
+        <form [formGroup]="blogForm" (ngSubmit)="handleAddBlogPost()" class="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg space-y-4">
+          <h3 class="font-bold text-lg">Add New Blog Post</h3>
+          <input formControlName="title" placeholder="Title" class="w-full p-2 rounded bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
+          <input formControlName="author" placeholder="Author" class="w-full p-2 rounded bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
+          <textarea formControlName="content" placeholder="Content" rows="10" class="w-full p-2 rounded bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600"></textarea>
+          <input type="file" (change)="onFileChange($event, 'image', 'blogForm')" class="w-full text-sm">
+          <button type="submit" [disabled]="blogForm.invalid" class="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50">Add Post</button>
+        </form>
+        <div class="space-y-2">
+           @for(post of blogPosts(); track post.id) {
+            <div class="flex justify-between items-center p-2 bg-slate-100 dark:bg-slate-800 rounded">
+              <span>{{ post.title }}</span>
+              <button (click)="deleteItem('blog', post.id)" class="px-2 py-1 text-xs bg-red-600 text-white rounded">Delete</button>
+            </div>
+          }
+        </div>
+      </div>
+    }
+    @case ('messages') {
+      <div class="space-y-4">
+        <h3 class="font-bold text-lg">Contact Messages</h3>
+        @for (message of messages(); track message.id) {
+          <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg">
+            <p class="font-semibold">{{ message.name }} <span class="font-normal text-slate-500">&lt;{{ message.email }}&gt;</span></p>
+            <p class="text-sm text-slate-500">{{ message.created_at | date:'short' }}</p>
+            <p class="mt-2">{{ message.message }}</p>
+          </div>
+        } @empty {
+          <p>No messages yet.</p>
+        }
+      </div>
+    }
+     @case ('resume') {
+      <div class="space-y-4">
+        <h3 class="font-bold text-lg">Manage Resume</h3>
+        <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg space-y-4">
+           @if (resumeUrl()) {
+             <p>Current resume: <a [href]="resumeUrl()" target="_blank" class="text-blue-500 underline">Download</a></p>
+           } @else {
+             <p>No resume uploaded.</p>
+           }
+           <div>
+            <label class="block text-sm font-medium mb-1">Upload New Resume (PDF)</label>
+            <input type="file" accept=".pdf" (change)="onResumeFileChange($event)" class="w-full text-sm">
+           </div>
+           <button (click)="handleUploadResume()" [disabled]="!resumeFile()" class="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50">Upload</button>
+        </div>
+      </div>
+    }
+  }
+</div>

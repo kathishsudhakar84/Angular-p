@@ -1,0 +1,59 @@
+
+<div class="relative min-h-screen w-full bg-light-secondary dark:bg-dark-primary text-light-text dark:text-dark-text transition-colors duration-300">
+  
+  <!-- Main container -->
+  <div class="relative mx-auto flex h-full min-h-screen w-full max-w-lg flex-col bg-light-primary dark:bg-dark-secondary shadow-2xl">
+    
+    <!-- Header -->
+    @if(!isAdminPage()) {
+      <header class="sticky top-0 z-40 flex items-center justify-between p-4 bg-white/70 dark:bg-slate-900/70 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800">
+        <h1 class="text-xl font-bold text-light-accent dark:text-dark-accent">Zenith</h1>
+        <div class="flex items-center space-x-4">
+          <nav class="hidden sm:flex items-center space-x-4">
+            @for (link of navLinks; track link.path) {
+              <a [routerLink]="link.path" routerLinkActive="text-light-accent dark:text-dark-accent font-semibold" [routerLinkActiveOptions]="{exact: true}"
+                 class="text-sm font-medium hover:text-light-accent dark:hover:text-dark-accent transition-colors">
+                {{ link.label }}
+              </a>
+            }
+          </nav>
+          <button (click)="toggleTheme()" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+            @if (isDark()) {
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+            }
+          </button>
+        </div>
+      </header>
+    } @else {
+      <!-- Admin Header -->
+       <header class="sticky top-0 z-40 flex items-center justify-between p-4 bg-white/70 dark:bg-slate-900/70 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800">
+        <h1 class="text-xl font-bold text-red-500">Admin Panel</h1>
+        @if(currentUser()) {
+           <button (click)="logout()" class="px-3 py-1 text-sm text-white bg-red-600 rounded-md hover:bg-red-700">Logout</button>
+        }
+       </header>
+    }
+
+    <!-- Content -->
+    <main class="flex-grow p-4 sm:p-6 pb-24">
+      <router-outlet></router-outlet>
+    </main>
+    
+    <!-- Bottom Navigation for Mobile -->
+    @if(!isAdminPage()) {
+      <nav class="fixed bottom-0 left-0 right-0 z-40 max-w-lg mx-auto sm:hidden bg-white/70 dark:bg-slate-900/70 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800">
+        <div class="flex justify-around h-16">
+          @for (link of navLinks; track link.path) {
+            <a [routerLink]="link.path" routerLinkActive="text-light-accent dark:text-dark-accent" [routerLinkActiveOptions]="{exact: true}"
+               class="flex flex-col items-center justify-center w-full text-xs text-slate-500 dark:text-slate-400 hover:text-light-accent dark:hover:text-dark-accent transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="link.icon" /></svg>
+              <span>{{ link.label }}</span>
+            </a>
+          }
+        </div>
+      </nav>
+    }
+  </div>
+</div>

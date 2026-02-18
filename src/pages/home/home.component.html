@@ -1,0 +1,28 @@
+
+<app-particle-background></app-particle-background>
+
+<div class="relative flex flex-col items-center justify-center h-full min-h-[70vh] text-center animate-fade-in">
+  <img src="https://picsum.photos/id/237/128/128" alt="Profile Picture" class="w-32 h-32 rounded-full mb-6 border-4 border-white dark:border-slate-700 shadow-lg">
+  
+  <h1 class="text-4xl md:text-5xl font-extrabold text-light-text dark:text-dark-text mb-2">
+    John Doe
+  </h1>
+  <p class="text-lg md:text-xl font-medium text-light-accent dark:text-dark-accent mb-6">
+    Senior Frontend Engineer
+  </p>
+  
+  <p class="max-w-md mx-auto text-slate-600 dark:text-slate-400 mb-8">
+    Crafting beautiful and performant web experiences with Angular and modern technologies. Passionate about UI/UX and clean code.
+  </p>
+  
+  <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+    <a routerLink="/portfolio" class="w-full sm:w-auto px-8 py-3 bg-light-accent text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 dark:bg-dark-accent dark:hover:bg-blue-500 transition-all duration-300 transform hover:scale-105">
+      View My Work
+    </a>
+    @if (resumeUrl()) {
+      <a [href]="resumeUrl()" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-8 py-3 bg-transparent border-2 border-light-accent text-light-accent dark:border-dark-accent dark:text-dark-accent font-semibold rounded-lg hover:bg-blue-50 dark:hover:bg-slate-800 transition-all duration-300 transform hover:scale-105">
+        Download Resume
+      </a>
+    }
+  </div>
+</div>
